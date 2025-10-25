@@ -100,6 +100,10 @@ pub enum PluginError {
     UnsupportedOperation,
     #[error("invalid request: {0}")]
     InvalidRequest(String),
+    #[error("plugin not ready: {0}")]
+    NotReady(String),
+    #[error("not found: {0}")]
+    NotFound(String),
     #[error("process already running for {0:?}")]
     ProcessAlreadyRunning(PluginTaskType),
     #[error("process not running for {0:?}")]
@@ -110,6 +114,8 @@ pub enum PluginError {
     Network(#[from] reqwest::Error),
     #[error("failed to start process: {0}")]
     ProcessStart(String),
+    #[error("plugin internal error: {0}")]
+    Internal(String),
 }
 
 #[async_trait]
@@ -185,5 +191,10 @@ impl SharedPluginManager {
     pub async fn plugin(&self, plugin_id: &str) -> Option<Arc<dyn ServerPlugin>> {
         let guard = self.inner.read().await;
         guard.plugin(plugin_id)
+    }
+
+    pub async fn register(&self, plugin: Arc<dyn ServerPlugin>) {
+        let mut guard = self.inner.write().await;
+        guard.register(plugin);
     }
 }

@@ -27,6 +27,16 @@ npm run start-browser
 ```
 
 The `start-browser` command will:
+changes without packaging an Electron application. A dedicated npm script has been added to start a
+secure Vite development server on port `8448`.
+
+```bash
+cd ui/desktop
+npm install
+npm run start-browser
+```
+
+The command will:
 
 - Regenerate the OpenAPI client before every run to stay aligned with the backend API.
 - Start a Vite dev server bound to `0.0.0.0:8448` so that it is reachable from virtual machines and
@@ -43,6 +53,8 @@ environment. The shim looks for backend connection details in the following orde
 1. URL query parameters: `?gooseBaseUrl=https://server:443&gooseSecret=<token>`
 2. Environment variables exposed to Vite at build time (`VITE_GOOSE_BASE_URL`,
    `VITE_GOOSE_SECRET`, and `VITE_GOOSE_WORKING_DIR`).
+2. Environment variables exposed to Vite at build time (`VITE_GOOSE_BASE_URL` and
+   `VITE_GOOSE_SECRET`).
 3. Values cached in `localStorage` from earlier runs.
 4. A default fallback of `https://<current-host>:8443` with an empty secret.
 

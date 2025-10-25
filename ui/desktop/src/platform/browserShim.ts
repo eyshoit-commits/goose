@@ -88,6 +88,7 @@ if (!browserWindow.electron) {
     },
     getConfig: () => ({
       GOOSE_WORKING_DIR: fallbackWorkingDir,
+      GOOSE_WORKING_DIR: workingDirFromQuery ?? '',
       GOOSE_DEFAULT_PROVIDER: '',
       GOOSE_VERSION: 'browser',
     }),
@@ -147,6 +148,7 @@ if (!browserWindow.electron) {
 if (!browserWindow.appConfig) {
   const config: Record<string, unknown> = {
     GOOSE_WORKING_DIR: localStorage.getItem('goose.browser.workingDir') ?? fallbackWorkingDir,
+    GOOSE_WORKING_DIR: localStorage.getItem('goose.browser.workingDir') ?? '',
     GOOSE_BASE_URL_SHARE: localStorage.getItem('goose.browser.baseUrl') ?? '',
   };
 

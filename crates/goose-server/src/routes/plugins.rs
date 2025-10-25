@@ -33,11 +33,14 @@ fn map_error(error: PluginError) -> (StatusCode, Json<PluginErrorResponse>) {
     let status = match error {
         PluginError::UnsupportedOperation => StatusCode::BAD_REQUEST,
         PluginError::InvalidRequest(_) => StatusCode::BAD_REQUEST,
+        PluginError::NotReady(_) => StatusCode::SERVICE_UNAVAILABLE,
+        PluginError::NotFound(_) => StatusCode::NOT_FOUND,
         PluginError::ProcessAlreadyRunning(_) => StatusCode::CONFLICT,
         PluginError::ProcessNotRunning(_) => StatusCode::CONFLICT,
         PluginError::Io(_) => StatusCode::INTERNAL_SERVER_ERROR,
         PluginError::Network(_) => StatusCode::BAD_GATEWAY,
         PluginError::ProcessStart(_) => StatusCode::INTERNAL_SERVER_ERROR,
+        PluginError::Internal(_) => StatusCode::INTERNAL_SERVER_ERROR,
     };
 
     (status, Json(PluginErrorResponse::new(error.to_string())))
