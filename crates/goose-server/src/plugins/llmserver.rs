@@ -16,17 +16,11 @@ use super::{
 
 struct ManagedProcess {
     child: Child,
-    command: String,
-    args: Vec<String>,
 }
 
 impl ManagedProcess {
-    fn new(child: Child, command: String, args: Vec<String>) -> Self {
-        Self {
-            child,
-            command,
-            args,
-        }
+    fn new(child: Child) -> Self {
+        Self { child }
     }
 }
 
@@ -239,14 +233,7 @@ impl ServerPlugin for LlmServerPlugin {
         })?;
 
         let mut processes = self.processes.lock().await;
-        processes.insert(
-            request.task_type.clone(),
-            ManagedProcess::new(
-                child,
-                binary_path.to_string_lossy().to_string(),
-                args.clone(),
-            ),
-        );
+        processes.insert(request.task_type.clone(), ManagedProcess::new(child));
 
         Ok(StartServiceResponse {
             pid,
@@ -282,11 +269,3 @@ impl ServerPlugin for LlmServerPlugin {
         })
     }
 }
-
-impl LlmServerPlugin {
-    pub fn base_dir(&self) -> &Path {
-        &self.base_dir
-    }
-}
-
-pub type SharedLlmServerPlugin = Arc<LlmServerPlugin>;

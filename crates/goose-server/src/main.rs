@@ -3,6 +3,7 @@ mod configuration;
 mod error;
 mod logging;
 mod openapi;
+mod plugins;
 mod routes;
 mod state;
 
