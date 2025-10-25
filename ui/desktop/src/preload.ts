@@ -41,7 +41,7 @@ interface UpdaterEvent {
 }
 
 // Define the API types in a single place
-type ElectronAPI = {
+export type ElectronAPI = {
   platform: string;
   reactReady: () => void;
   getConfig: () => Record<string, unknown>;

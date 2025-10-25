@@ -4,6 +4,7 @@ import { ConfigProvider } from './components/ConfigContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import SuspenseLoader from './suspense-loader';
 import { client } from './api/client.gen';
+import './platform/browserShim';
 
 const App = lazy(() => import('./App'));
 
