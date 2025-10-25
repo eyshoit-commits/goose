@@ -7,6 +7,7 @@ export type View =
   | 'pair'
   | 'settings'
   | 'extensions'
+  | 'plugins'
   | 'moreModels'
   | 'configureProviders'
   | 'configPage'
@@ -74,6 +75,9 @@ export const createNavigationHandler = (navigate: NavigateFunction) => {
         break;
       case 'extensions':
         navigate('/extensions', { state: options });
+        break;
+      case 'plugins':
+        navigate('/plugins', { state: options });
         break;
       default:
         navigate('/', { state: options });

@@ -45,6 +45,7 @@ import {
 } from './hooks/useAgent';
 import { useNavigation } from './hooks/useNavigation';
 import Pair2 from './components/Pair2';
+import PluginCenter from './components/plugins/PluginCenter';
 
 // Route Components
 const HubRouteWrapper = ({
@@ -594,6 +595,7 @@ export function AppInner() {
             <Route path="sessions" element={<SessionsRoute />} />
             <Route path="schedules" element={<SchedulesRoute />} />
             <Route path="recipes" element={<RecipesRoute />} />
+            <Route path="plugins" element={<PluginCenter />} />
             <Route
               path="shared-session"
               element={

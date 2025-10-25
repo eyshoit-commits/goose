@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { FileText, Clock, Home, Puzzle, History } from 'lucide-react';
+import { FileText, Clock, Home, Puzzle, History, PlugZap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import {
   SidebarContent,
@@ -84,6 +84,13 @@ const menuItems: NavigationEntry[] = [
     label: 'Extensions',
     icon: Puzzle,
     tooltip: 'Manage your extensions',
+  },
+  {
+    type: 'item',
+    path: '/plugins',
+    label: 'Plugins',
+    icon: PlugZap,
+    tooltip: 'Manage installed plugins',
   },
   { type: 'separator' },
   {

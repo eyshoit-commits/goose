@@ -39,6 +39,9 @@ const AppLayoutContent: React.FC<AppLayoutProps> = ({ setIsGoosehintsModalOpen }
       case 'extensions':
         navigate('/extensions', { state: viewOptions });
         break;
+      case 'plugins':
+        navigate('/plugins');
+        break;
       case 'sessions':
         navigate('/sessions');
         break;
