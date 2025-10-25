@@ -12,6 +12,7 @@
     "generate-api": "openapi-ts",
     "start-gui": "npm run generate-api && electron-forge start",
     "start-gui-debug": "npm run generate-api && electron-forge start -- --inspect=9229",
+    "start-browser": "npm run generate-api && vite --config vite.renderer.config.mts --host 0.0.0.0 --port 8448",
     "start": "cd ../.. && just run-ui",
     "start:test-error": "GOOSE_TEST_ERROR=true electron-forge start",
     "package": "electron-forge package",
