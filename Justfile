@@ -157,6 +157,10 @@ run-ui:
     @echo "Running UI..."
     cd ui/desktop && npm install && npm run start-gui
 
+run-browser-ui base_url="https://127.0.0.1:8443" secret="" working_dir="" *args:
+    @echo "Running goose UI in browser mode..."
+    {{ if secret != "" { "GOOSE_BROWSER_SECRET=" + quote(secret) + " " } else { "" } }}{{ if working_dir != "" { "GOOSE_BROWSER_WORKING_DIR=" + quote(working_dir) + " " } else { "" } }}GOOSE_BROWSER_BASE_URL={{quote(base_url)}} ./scripts/run-browser-ui.sh {{ if args.len() > 0 { "-- " + args.map(|arg| quote(arg)).join(" ") } else { "" } }}
+
 run-ui-playwright:
     #!/usr/bin/env sh
     just release-binary

@@ -16,6 +16,11 @@ use super::{
 
 struct ManagedProcess {
     child: Child,
+}
+
+impl ManagedProcess {
+    fn new(child: Child) -> Self {
+        Self { child }
     command: String,
     args: Vec<String>,
 }
@@ -239,6 +244,7 @@ impl ServerPlugin for LlmServerPlugin {
         })?;
 
         let mut processes = self.processes.lock().await;
+        processes.insert(request.task_type.clone(), ManagedProcess::new(child));
         processes.insert(
             request.task_type.clone(),
             ManagedProcess::new(

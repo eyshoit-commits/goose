@@ -5,6 +5,8 @@ const browserWindow = window as typeof window & {
   appConfig?: { get: (key: string) => unknown; getAll: () => Record<string, unknown> };
 };
 
+let fallbackWorkingDir = '';
+
 if (!browserWindow.electron) {
   const params = new URLSearchParams(window.location.search);
   const storageBaseUrlKey = 'goose.browser.baseUrl';
@@ -57,6 +59,7 @@ if (!browserWindow.electron) {
     `${window.location.protocol}//${window.location.hostname}:8443`;
 
   const fallbackSecret = secretFromQuery ?? resolvedMetaEnv.VITE_GOOSE_SECRET ?? '';
+  fallbackWorkingDir = workingDirFromQuery ?? resolvedMetaEnv.VITE_GOOSE_WORKING_DIR ?? '';
 
   const logger = {
     info: (...args: unknown[]) => console.info('[goose-browser]', ...args),
@@ -84,6 +87,7 @@ if (!browserWindow.electron) {
       }
     },
     getConfig: () => ({
+      GOOSE_WORKING_DIR: fallbackWorkingDir,
       GOOSE_WORKING_DIR: workingDirFromQuery ?? '',
       GOOSE_DEFAULT_PROVIDER: '',
       GOOSE_VERSION: 'browser',
@@ -143,6 +147,7 @@ if (!browserWindow.electron) {
 
 if (!browserWindow.appConfig) {
   const config: Record<string, unknown> = {
+    GOOSE_WORKING_DIR: localStorage.getItem('goose.browser.workingDir') ?? fallbackWorkingDir,
     GOOSE_WORKING_DIR: localStorage.getItem('goose.browser.workingDir') ?? '',
     GOOSE_BASE_URL_SHARE: localStorage.getItem('goose.browser.baseUrl') ?? '',
   };

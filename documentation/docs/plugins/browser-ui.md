@@ -6,6 +6,27 @@ manage the new plugin administration workflows that ship with the `llmserver-rs`
 ## run the desktop ui inside a browser
 
 Running the interface in a browser is helpful on development workstations where you want to test
+changes without packaging an Electron application. The helper script shipped in
+`scripts/run-browser-ui.sh` wraps the
+[reference gist](https://gist.github.com/khronokernel/122dc28114d3a3b1673fa0423b5a9b39) and prepares
+the correct environment variables before starting the secure Vite development server on port `8448`.
+
+```bash
+./scripts/run-browser-ui.sh --base-url https://127.0.0.1:4010 --secret dev-secret
+```
+
+The script accepts optional flags to override the backend base URL, provide an authentication token,
+skip dependency installation, and forward extra arguments to Vite. It installs dependencies on the
+first run so that new contributors can launch the UI with a single command.
+
+Under the hood the script runs:
+
+```bash
+cd ui/desktop
+npm run start-browser
+```
+
+The `start-browser` command will:
 changes without packaging an Electron application. A dedicated npm script has been added to start a
 secure Vite development server on port `8448`.
 
@@ -30,6 +51,8 @@ The browser mode cannot rely on Electron's preload APIs. A light-weight shim aut
 environment. The shim looks for backend connection details in the following order:
 
 1. URL query parameters: `?gooseBaseUrl=https://server:443&gooseSecret=<token>`
+2. Environment variables exposed to Vite at build time (`VITE_GOOSE_BASE_URL`,
+   `VITE_GOOSE_SECRET`, and `VITE_GOOSE_WORKING_DIR`).
 2. Environment variables exposed to Vite at build time (`VITE_GOOSE_BASE_URL` and
    `VITE_GOOSE_SECRET`).
 3. Values cached in `localStorage` from earlier runs.
