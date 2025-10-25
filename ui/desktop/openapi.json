@@ -926,6 +926,222 @@
         }
       }
     },
+    "/plugins": {
+      "get": {
+        "tags": [
+          "super::routes::plugins"
+        ],
+        "operationId": "list_plugins",
+        "responses": {
+          "200": {
+            "description": "List registered plugins",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PluginMetadata"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/plugins/{plugin_id}/models/download": {
+      "post": {
+        "tags": [
+          "super::routes::plugins"
+        ],
+        "operationId": "download_model",
+        "parameters": [
+          {
+            "name": "plugin_id",
+            "in": "path",
+            "description": "Plugin identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DownloadModelRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Model downloaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DownloadModelResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PluginErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Plugin not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PluginErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/plugins/{plugin_id}/services/start": {
+      "post": {
+        "tags": [
+          "super::routes::plugins"
+        ],
+        "operationId": "start_service",
+        "parameters": [
+          {
+            "name": "plugin_id",
+            "in": "path",
+            "description": "Plugin identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartServiceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Service started",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StartServiceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PluginErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Plugin not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PluginErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Service already running",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PluginErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/plugins/{plugin_id}/services/stop": {
+      "post": {
+        "tags": [
+          "super::routes::plugins"
+        ],
+        "operationId": "stop_service",
+        "parameters": [
+          {
+            "name": "plugin_id",
+            "in": "path",
+            "description": "Plugin identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StopServiceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Service stopped",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StopServiceResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Plugin not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PluginErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Service not running",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PluginErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/recipes/create": {
       "post": {
         "tags": [
@@ -2304,6 +2520,53 @@
           }
         }
       },
+      "DownloadModelRequest": {
+        "type": "object",
+        "required": [
+          "model_id",
+          "filename",
+          "task_type"
+        ],
+        "properties": {
+          "auth_token": {
+            "type": "string",
+            "nullable": true
+          },
+          "destination_dir": {
+            "type": "string",
+            "nullable": true
+          },
+          "filename": {
+            "type": "string"
+          },
+          "model_id": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "string"
+          },
+          "task_type": {
+            "$ref": "#/components/schemas/PluginTaskType"
+          }
+        }
+      },
+      "DownloadModelResponse": {
+        "type": "object",
+        "required": [
+          "saved_path",
+          "bytes_written"
+        ],
+        "properties": {
+          "bytes_written": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "saved_path": {
+            "type": "string"
+          }
+        }
+      },
       "EmbeddedResource": {
         "type": "object",
         "required": [
@@ -3284,6 +3547,58 @@
           "never_allow"
         ]
       },
+      "PluginCapability": {
+        "type": "string",
+        "enum": [
+          "model_download",
+          "service_start",
+          "service_stop"
+        ]
+      },
+      "PluginErrorResponse": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "PluginMetadata": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "capabilities"
+        ],
+        "properties": {
+          "capabilities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PluginCapability"
+            }
+          },
+          "description": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "PluginTaskType": {
+        "type": "string",
+        "enum": [
+          "text",
+          "tts"
+        ]
+      },
       "PrincipalType": {
         "type": "string",
         "enum": [
@@ -4152,6 +4467,89 @@
           },
           "working_dir": {
             "type": "string"
+          }
+        }
+      },
+      "StartServiceRequest": {
+        "type": "object",
+        "required": [
+          "task_type",
+          "model_path"
+        ],
+        "properties": {
+          "args": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "binary_path": {
+            "type": "string",
+            "nullable": true
+          },
+          "environment": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "model_path": {
+            "type": "string"
+          },
+          "task_type": {
+            "$ref": "#/components/schemas/PluginTaskType"
+          }
+        }
+      },
+      "StartServiceResponse": {
+        "type": "object",
+        "required": [
+          "pid",
+          "command",
+          "args"
+        ],
+        "properties": {
+          "args": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "command": {
+            "type": "string"
+          },
+          "pid": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          }
+        }
+      },
+      "StopServiceRequest": {
+        "type": "object",
+        "required": [
+          "task_type"
+        ],
+        "properties": {
+          "task_type": {
+            "$ref": "#/components/schemas/PluginTaskType"
+          }
+        }
+      },
+      "StopServiceResponse": {
+        "type": "object",
+        "required": [
+          "task_type",
+          "terminated"
+        ],
+        "properties": {
+          "task_type": {
+            "$ref": "#/components/schemas/PluginTaskType"
+          },
+          "terminated": {
+            "type": "boolean"
           }
         }
       },
