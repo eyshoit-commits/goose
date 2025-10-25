@@ -98,6 +98,11 @@ All plugin endpoints follow the `/plugins/{plugin_id}` namespace:
 - `POST /plugins/{plugin_id}/services/start`: launch a managed inference process.
 - `POST /plugins/{plugin_id}/services/stop`: stop the running process for the selected task type.
 
+The OpenAPI specification now advertises complete schemas for these plugin operations, including
+`PluginMetadata`, request payloads, and error responses. This ensures downstream tooling that
+consumes the generated OpenAPI document can reliably infer the available plugin capabilities
+exposed by goose.
+
 Requests accept JSON payloads that closely mirror the UI forms. The download endpoint accepts the
 Hugging Face repository (`model_id`), the file name (`filename`), optional `revision`, optional
 `destination_dir`, optional `auth_token`, and the desired `task_type` (`text` or `tts`). The start

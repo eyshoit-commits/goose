@@ -489,17 +489,16 @@ derive_utoipa!(Icon as IconSchema);
         super::routes::agent::ResumeAgentRequest,
         super::routes::agent::UpdateFromSessionRequest,
         super::routes::setup::SetupResponse,
-        // Plugins
+        crate::plugins::PluginCapability,
+        crate::plugins::PluginMetadata,
+        crate::plugins::PluginTaskType,
+        crate::plugins::DownloadModelRequest,
+        crate::plugins::DownloadModelResponse,
+        crate::plugins::StartServiceRequest,
+        crate::plugins::StartServiceResponse,
+        crate::plugins::StopServiceRequest,
+        crate::plugins::StopServiceResponse,
         super::routes::plugins::PluginErrorResponse,
-        super::plugins::PluginMetadata,
-        super::plugins::PluginCapability,
-        super::plugins::PluginTaskType,
-        super::plugins::DownloadModelRequest,
-        super::plugins::DownloadModelResponse,
-        super::plugins::StartServiceRequest,
-        super::plugins::StartServiceResponse,
-        super::plugins::StopServiceRequest,
-        super::plugins::StopServiceResponse,
     ))
 )]
 pub struct ApiDoc;
